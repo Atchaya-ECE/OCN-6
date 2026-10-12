@@ -64,8 +64,86 @@ Fiber length	5–20 m
 <img width="561" height="461" alt="image" src="https://github.com/user-attachments/assets/0f298da2-0dc1-43fd-bab6-0641a5210748" />
 
 ## Python Code
+```
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+h = 6.626e-34
+c = 3e8
+lambda_s = 1550e-9
+nu = c / lambda_s
+
+# Parameters
+n_sp = 1.2
+B = 50e9
+Pin = 1e-6
+
+# Gain vs Pump Power
+pump_power = np.linspace(0.01, 0.2, 50)
+
+G_linear = 1 + 50 * (
+    pump_power / (pump_power + 0.05)
+)
+
+G_dB = 10 * np.log10(G_linear)
+
+# Gain Spectrum
+wavelength = np.linspace(1525, 1565, 100)
+
+G_spec = 30 * np.exp(
+    -((wavelength - 1535) / 10)**2
+)
+
+# Noise Figure
+F = 2 * n_sp * (G_linear - 1) / G_linear
+
+NF_dB = 10 * np.log10(F)
+
+# ASE Power
+P_ASE = (
+    2 * n_sp *
+    (G_linear - 1) *
+    h * nu * B
+)
+
+# Plot 1: Gain vs Pump Power
+plt.figure()
+plt.plot(pump_power, G_dB)
+
+plt.xlabel("Pump Power (W)")
+plt.ylabel("Gain (dB)")
+plt.title("Gain vs Pump Power")
+plt.grid()
+plt.show()
+
+# Plot 2: EDFA Gain Spectrum
+plt.figure()
+plt.plot(wavelength, G_spec)
+
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Gain (dB)")
+plt.title("EDFA Gain Spectrum")
+plt.grid()
+plt.show()
+
+# Plot 3: Noise Figure vs Gain
+plt.figure()
+plt.plot(G_dB, NF_dB)
+
+plt.xlabel("Gain (dB)")
+plt.ylabel("Noise Figure (dB)")
+plt.title("Noise Figure vs Gain")
+plt.grid()
+plt.show()
+```
 
 ## Output
+<img width="563" height="455" alt="image" src="https://github.com/user-attachments/assets/6d17253f-af7f-4d0a-a121-dbc0135c7f6f" />
+
+<img width="562" height="455" alt="image" src="https://github.com/user-attachments/assets/c4a02a6d-0b9c-44f1-9065-eea84e6891bd" />
+
+<img width="576" height="455" alt="image" src="https://github.com/user-attachments/assets/9afd0349-0e12-42f1-b86d-6a44e708f5a2" />
 
 ## Result
-
+The EDFA performance was successfully analyzed using Python simulation. The amplifier gain and noise performance were studied, and the relationship between input power, output power, gain, and noise figure was observed.
